@@ -1,0 +1,7 @@
+LIB_SRC = $(ROOT)/lib/src
+
+LX = ld.lld
+
+LXFLAGS += -r
+
+!lx = |> $(LX) $(LXFLAGS) %%%f -o %o |>
