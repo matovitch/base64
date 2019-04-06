@@ -12,11 +12,11 @@ extern "C"
 
 static const ko_longopt_t K_OPTIONS[] =
 {
-    { "help"    , 0, 'h' },
-    { "version" , 0, 'v' },
-    { "encode"  , 0, 'e' },
-    { "decode"  , 0, 'd' },
-    { 0         , 0,  0  } // sentinel required
+    { "help"    , ko_no_argument, 'h' },
+    { "version" , ko_no_argument, 'v' },
+    { "encode"  , ko_no_argument, 'e' },
+    { "decode"  , ko_no_argument, 'd' },
+    { nullptr   , ko_no_argument, '?' } // sentinel required
 };
 
 void displayHelp(std::ostream& os)
@@ -25,6 +25,8 @@ void displayHelp(std::ostream& os)
     os << "Usage:\n";
     os << "    " << "-h --help       Show this screen\n";
     os << "    " << "-v --version    Display version\n";
+    os << "    " << "-e --encode     Encode STDIN in base64\n";
+    os << "    " << "-d --decode     Decode STDIN in base64\n";
 }
 
 void displayVersion(std::ostream& os)
