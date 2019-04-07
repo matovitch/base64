@@ -10,14 +10,25 @@ extern "C"
 #include <cstdint>
 #include <vector>
 
-static const ko_longopt_t K_OPTIONS[] =
+enum : char
 {
-    { "help"    , ko_no_argument, 'h' },
-    { "version" , ko_no_argument, 'v' },
-    { "encode"  , ko_no_argument, 'e' },
-    { "decode"  , ko_no_argument, 'd' },
-    { nullptr   , ko_no_argument, '?' } // sentinel required
+    K_OPTION_INVALID = ':',
+    K_OPTION_HELP    = 'h',
+    K_OPTION_VERSION = 'v',
+    K_OPTION_ENCODE  = 'e',
+    K_OPTION_DECODE  = 'd'
 };
+
+static const ko_longopt_t K_OPTIONS_LONG[] =
+{
+    { "help"    , ko_no_argument, K_OPTION_HELP    },
+    { "version" , ko_no_argument, K_OPTION_VERSION },
+    { "encode"  , ko_no_argument, K_OPTION_ENCODE  },
+    { "decode"  , ko_no_argument, K_OPTION_DECODE  },
+    { nullptr   , ko_no_argument, K_OPTION_INVALID } // sentinel required
+};
+
+static const char* K_OPTIONS_SHORT = "hved";
 
 void displayHelp(std::ostream& os)
 {
@@ -96,14 +107,19 @@ int main(int argc, char** argv)
     bool hasDecode  = false;
 
     ketopt_t ketoptStatus = KETOPT_INIT;
-    int ketoptOption;
+    int      ketoptOption;
 
-    while ((ketoptOption = ketopt(&ketoptStatus, argc, argv, 0, "hved", K_OPTIONS)) != -1)
+    while ((ketoptOption = ketopt(&ketoptStatus,
+                                  argc,
+                                  argv,
+                                  0,
+                                  K_OPTIONS_SHORT,
+                                  K_OPTIONS_LONG)) != -1)
     {
-        if (ketoptOption == 'h') { hasHelp    = true; }
-        if (ketoptOption == 'v') { hasVersion = true; }
-        if (ketoptOption == 'e') { hasEncode  = true; }
-        if (ketoptOption == 'd') { hasDecode  = true; }
+        hasHelp    |= (ketoptOption == K_OPTION_HELP    );
+        hasVersion |= (ketoptOption == K_OPTION_VERSION );
+        hasEncode  |= (ketoptOption == K_OPTION_ENCODE  );
+        hasDecode  |= (ketoptOption == K_OPTION_DECODE  );
     }
 
     if (hasHelp)
