@@ -4,5 +4,8 @@ BIN_TEST_OUT = test
 CXFLAGS += -I $(ROOT)/test/src
 
 # Note: The linker need the libs in topological order
+CLFLAGS += -l doctest
 CLFLAGS += -l base64
+
+CLFLAGS += -L $(ROOT)/lib/src/doctest
 CLFLAGS += -L $(ROOT)/lib/src/base64

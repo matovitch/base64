@@ -1,6 +1,10 @@
 #include "base64/base64.hpp"
 
-#include "doctest/doctest.h"
+#include "doctest/doctest_fwd.h"
+
+#include <cstdint>
+#include <string>
+#include <vector>
 
 std::string base64Decode(const std::string& srceAsString)
 {

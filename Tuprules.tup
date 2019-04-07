@@ -44,6 +44,8 @@ CXFLAGS += -I $(ROOT)/lib/include
 
 CL = $(CX)
 
+CLFLAGS += -fuse-ld=lld
+
 ifeq (@(IS_ASAN),y)
     CLFLAGS += -fsanitize=address
 endif

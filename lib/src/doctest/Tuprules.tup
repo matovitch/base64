@@ -1,0 +1,2 @@
+LIB_DOCTEST_CPP = $(LIB_SRC)/doctest/*.cpp
+LIB_DOCTEST_OUT = libdoctest.a
