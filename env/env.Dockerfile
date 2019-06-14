@@ -9,6 +9,8 @@ ENV TO_INSTALL "               \
     curl                       \
     fuse                       \
     libfuse-dev                \
+    cmake                      \
+    socat                      \
 "
 
 ENV TO_REMOVE "                \
@@ -17,6 +19,7 @@ ENV TO_REMOVE "                \
     curl                       \
     libfuse-dev                \
     git-core                   \
+    cmake                      \
 "
 
 ENV GUEST_GID "1000"
@@ -69,6 +72,13 @@ RUN set -ex                                                                     
     mv tup /usr/bin                                                                                             &&\
     cd ..                                                                                                       &&\
     rm -r tup                                                                                                   &&\
+    mkdir bear                                                                                                  &&\
+    cd bear                                                                                                     &&\
+    git clone git://github.com/rizsotto/Bear.git --progress                                                     &&\
+    cmake Bear                                                                                                  &&\
+    make all && make install                                                                                    &&\
+    cd ..                                                                                                       &&\
+    rm -r bear                                                                                                  &&\
     apt-get remove -y $TO_REMOVE                                                                                &&\
     apt-get autoremove -y                                                                                       &&\
     apt-get clean                                                                                               &&\

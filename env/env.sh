@@ -19,14 +19,25 @@ function runEnv()
     docker inspect $CONTAINER 2> /dev/null | grep running > /dev/null &&
         docker container rm -f $CONTAINER 2>&1 > /dev/null
 
-    docker run --privileged                                            \
-               --cap-add ALL                                           \
-               --user guest:guest                                      \
-               --device /dev/fuse                                      \
-               --mount type=bind,source=${ROOT_FOLDER},target=/mnt     \
-               --workdir /mnt                                          \
-               --name $CONTAINER                                       \
-               --interactive                                           \
-               --tty                                                   \
-               $IMAGE $@
+    docker run --privileged                                                \
+               --cap-add ALL                                               \
+               --user guest:guest                                          \
+               --device /dev/fuse                                          \
+               --mount type=bind,source=${ROOT_FOLDER},target=$ROOT_FOLDER \
+               --workdir $ROOT_FOLDER                                      \
+               --name $CONTAINER                                           \
+               --interactive                                               \
+               --tty                                                       \
+               --publish 50505:50505                                       \
+               $IMAGE "$@"
+}
+
+function makeCompileDb()
+{
+    runEnv $ROOT_FOLDER/env/compile_db.sh
+}
+
+function makeClangd()
+{
+    runEnv socat tcp-listen:50505,reuseaddr exec:$ROOT_FOLDER/env/clangd.sh
 }
