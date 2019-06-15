@@ -11,6 +11,7 @@
 		{
 			"clangd":
 			{
+				"command": [],
 				"enabled": true,
 				"tcp_port": 50505
 			}
